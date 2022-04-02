@@ -174,7 +174,7 @@ class App extends Component{
                  }}><p className='text-sm' style={{color:'black'}}>Wallet</p></button>
                  <li className='nav-item text-nowrap
                 d-none d-sm-none d-sm-block
-                '><lavel className='text-md font-weight-bold' style={{color:"white"}}>{this.state.account.substr(0,5)+' ... '+this.state.account.substr(36,42)}</lavel></li>
+                '></li>
                  
                  
                 </li>
