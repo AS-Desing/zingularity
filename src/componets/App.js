@@ -6,6 +6,7 @@ import KryptoBird2 from '../abis/abis-2/KryptoBird2.json'
 import KryptoBird3 from '../abis/abis-3/KryptoBird3.json'
 import {MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn} from 'mdb-react-ui-kit';
 import './App.css';
+import { event } from 'jquery';
 
 
 class App extends Component{
@@ -86,7 +87,7 @@ class App extends Component{
                 kryptoBirdz:[...this.state.kryptoBirdz, KryptoBird]
             })
         })  
-    }
+    };
     //burn function-------------------------------------------------------------------------------------------------------------
 
     //burn = (kryptoBird) => {
@@ -99,6 +100,32 @@ class App extends Component{
     //}
 
 
+    async connectMetamask () {
+        const provider = await detectEthereumProvider();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts()
+
+        
+
+        console.log( "WE ARE IN META MASK CONNECT" );
+          if (provider) {
+              // let web3InstanceCopy = new Web3(currentProvider);
+              // setWeb3Instance(web3InstanceCopy);
+              if (!window.ethereum.selectedAddress) {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+              }
+              await window.ethereum.enable();
+              let currentAddress = window.ethereum.selectedAddress;
+              console.log(currentAddress);
+              this.setState({account:accounts[0]})
+              //const web3 = new Web3(provider);
+              //let amount = await web3.eth.getBalance(currentAddress);
+              //amount = web3.utils.fromWei(web3.utils.toBN(amount), "ether");
+          } else {
+              console.log('Please install MetaMask!');
+          }
+    
+      }
 
 
     constructor(props){
@@ -107,7 +134,9 @@ class App extends Component{
             contract:null,
             account:"",
             totalSupply:0,
-            kryptoBirdz:[]
+            kryptoBirdz:[],
+
+
         }
     }
 
@@ -124,18 +153,35 @@ class App extends Component{
                 bg-dark flex-md-nowrap p-0 shadow'>
                 <div className='navbar-brand col-sm-3 col-md-3 
                 mr-0' style={{color:'white'}}>
-                      Krypto Birdz NFTs (Non Fungible Tokens)
+                      Zingularity NFT
                 </div>
                 <ul className='navbar-nav px-3'>
                 <li className='nav-item text-nowrap
                 d-none d-sm-none d-sm-block
                 '>
-                <small className='text-white'>
-                    {this.state.account}
-                </small>
+                {/*                <small className='text-white'>
+                    //{this.state.account}
+                </small>*/}
+
+                </li>
+                <li className='nav-item text-nowrap
+                d-none d-sm-none d-sm-block
+                '><button  className='btn btn-sm bg-white color' onClick={ (event)=>{
+                    event.preventDefault()
+                    const account=this.state.account
+                    this.connectMetamask(account);
+
+                 }}><p className='text-sm' style={{color:'black'}}>Wallet</p></button>
+                 <li className='nav-item text-nowrap
+                d-none d-sm-none d-sm-block
+                '><lavel className='text-md font-weight-bold' style={{color:"white"}}>{this.state.account.substr(0,5)+' ... '+this.state.account.substr(36,42)}</lavel></li>
+                 
+                 
                 </li>
                 </ul>
                 </nav>
+
+
 
                 <div className='container-fluid mt-1 py-5'>
                     <div className='row'>
